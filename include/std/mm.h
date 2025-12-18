@@ -1,5 +1,8 @@
 #ifndef MM_H_
 #define MM_H_
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <stddef.h>
 #include <std/mem.h>
@@ -70,4 +73,7 @@ Return allocated size.
 */
 int mm_get_allocated();
 
+#ifdef __cplusplus
+}
+#endif
 #endif

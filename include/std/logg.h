@@ -1,11 +1,32 @@
-#ifndef LOGG_H_
-#define LOGG_H_
+/*
+*  License:
+*  Copyright (C) 2024 Project Contributor
+*
+*  This program is free software: you can redistribute it and/or modify it under the terms of 
+*  the GNU General Public License as published by the Free Software Foundation, version 3.
+*  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+*  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+*  See the GNU General Public License for more details.
+*  You should have received a copy of the GNU General Public License along with this program. 
+*  If not, see https://www.gnu.org/licenses/.
+* 
+*  Related database implementation
+*  Credits: project contributors
+*/
 
-#include <stdio.h>
+#ifndef LOGGING_H_
+#define LOGGING_H_
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <null.h>
 #include <stdarg.h>
 
-#define LOG_FILE_NAME_SIZE  16
-#define LOG_FILE_SIZE       100
+typedef struct {
+    int (*fd_fprintf)(const char*, ...);
+    int (*fd_vfprintf)(const char*, va_list);
+} log_io_t;
 
 #ifdef ERROR_LOGS
     #define print_error(message, ...)   log_message("ERROR", __FILE__, __LINE__, message, ##__VA_ARGS__)
@@ -56,6 +77,20 @@
 #endif
 
 /*
+Logging init.
+Params:
+- fd_fprintf - fprintf function in your platform. Can be NULL (Will disable all logging).
+- fd_vfprintf - vfprintf function in your platform. Can be NULL.
+
+Return 1 if setup success.
+Return 0 if something goes wrong.
+*/
+int LOG_setup(
+    int (*fd_fprintf)(const char*, ...),
+    int (*fd_vfprintf)(const char*, va_list)
+);
+
+/*
 Create log message.
 
 - level - Log level.
@@ -63,6 +98,9 @@ Create log message.
 - line - Code line number.
 - message - Additional info message.
 */
-void log_message(const char* level, const char* file, int line, const char* message, ...);
+int log_message(const char* level, const char* file, int line, const char* message, ...);
 
+#ifdef __cplusplus
+}
+#endif
 #endif

@@ -1,5 +1,8 @@
 #ifndef MAP_H_
 #define MAP_H_
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <std/mm.h>
 #include <std/mem.h>
@@ -212,4 +215,7 @@ int map_free_force_op(map_t* m, int (*op)(void*));
     while ((map_iter_next(&CONCAT(__it_, __LINE__), (void**)&CONCAT(__val_, __LINE__)))) \
         for (v = CONCAT(__val_, __LINE__); CONCAT(__val_, __LINE__); CONCAT(__val_, __LINE__) = NULL)
 
+#ifdef __cplusplus
+}
+#endif
 #endif
